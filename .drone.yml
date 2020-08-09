@@ -1,0 +1,256 @@
+kind: pipeline
+type: docker
+name: production
+trigger:
+  branch:
+    - master
+  event:
+    include:
+      - push
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
+steps:
+  - name: dockerization
+    image: docker:dind
+    environment:
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      REACT_APP_ENV: production
+      REACT_APP_API_URL:
+        from_secret: production_api_url
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+      - docker pull cosmosummc/tadpole:production || true
+      - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7} || true
+      - docker pull cosmosummc/tadpole:production-builder || true
+      - docker pull cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7} || true
+      - >
+        docker build .
+        --build-arg REACT_APP_ENV=$REACT_APP_ENV
+        --build-arg REACT_APP_API_URL=$REACT_APP_API_URL
+        --file Dockerfile
+        --target build_base
+        --cache-from cosmosummc/tadpole:production-builder
+        --cache-from cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+        --tag cosmosummc/tadpole:production-builder
+        --tag cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+      - >
+        docker build .
+        --build-arg REACT_APP_ENV=$REACT_APP_ENV
+        --build-arg REACT_APP_API_URL=$REACT_APP_API_URL
+        --file Dockerfile
+        --cache-from cosmosummc/tadpole:production
+        --cache-from cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        --cache-from cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+        --tag cosmosummc/tadpole:production
+        --tag cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+      - docker push cosmosummc/tadpole:production
+      - docker push cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+      - docker push cosmosummc/tadpole:production-builder
+      - docker push cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+
+  - name: deployment-deprecated
+    image: appleboy/drone-ssh
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      HOST: pkd.cosmos.care
+    settings:
+      host: prod-0.do.cosmos.care
+      username: root
+      port: 22
+      command_timeout: 3m
+      script_stop: true
+      key:
+        from_secret: ssh_key
+      envs:
+        - DOCKERHUB_USERNAME
+        - DOCKERHUB_PASSWORD
+        - HOST
+      script:
+        - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+        - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker container stop tadpole || true
+        - docker container rm tadpole || true
+        - docker container run -d
+          --name tadpole
+          --restart=unless-stopped
+          --log-driver fluentd
+          -e "VIRTUAL_PORT=3000"
+          -e "VIRTUAL_HOST=$HOST"
+          -e "LETSENCRYPT_HOST=$HOST"
+          cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker image prune -a -f && docker system prune -a -f
+
+  - name: deployment
+    image: appleboy/drone-ssh
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      HOST: pkd.cosmos.care
+    settings:
+      host: pkd-prod-0.do.cosmos.care
+      username: root
+      port: 22
+      command_timeout: 3m
+      script_stop: true
+      key:
+        from_secret: ssh_key
+      envs:
+        - DOCKERHUB_USERNAME
+        - DOCKERHUB_PASSWORD
+        - HOST
+      script:
+        - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+        - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker container stop tadpole || true
+        - docker container rm tadpole || true
+        - docker container run -d
+          --name tadpole
+          --restart=unless-stopped
+          --log-driver fluentd
+          -e "VIRTUAL_PORT=3000"
+          -e "VIRTUAL_HOST=$HOST"
+          -e "LETSENCRYPT_HOST=$HOST"
+          cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker image prune -a -f && docker system prune -a -f
+
+---
+kind: pipeline
+type: docker
+name: staging
+trigger:
+  branch:
+    - dev
+  event:
+    include:
+      - push
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
+steps:
+  - name: dockerization
+    image: docker:dind
+    environment:
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      REACT_APP_ENV: staging
+      REACT_APP_API_URL:
+        from_secret: staging_api_url
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+      - docker pull cosmosummc/tadpole:staging || true
+      - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7} || true
+      - docker pull cosmosummc/tadpole:staging-builder || true
+      - docker pull cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7} || true
+      - >
+        docker build .
+        --build-arg REACT_APP_ENV=$REACT_APP_ENV
+        --build-arg REACT_APP_API_URL=$REACT_APP_API_URL
+        --file Dockerfile
+        --target build_base
+        --cache-from cosmosummc/tadpole:staging-builder
+        --cache-from cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+        --tag cosmosummc/tadpole:staging-builder
+        --tag cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+      - >
+        docker build .
+        --build-arg REACT_APP_ENV=$REACT_APP_ENV
+        --build-arg REACT_APP_API_URL=$REACT_APP_API_URL
+        --file Dockerfile
+        --cache-from cosmosummc/tadpole:staging
+        --cache-from cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        --cache-from cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+        --tag cosmosummc/tadpole:staging
+        --tag cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+      - docker push cosmosummc/tadpole:staging
+      - docker push cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+      - docker push cosmosummc/tadpole:staging-builder
+      - docker push cosmosummc/tadpole:builder-${DRONE_COMMIT_SHA:0:7}
+
+  - name: deployment-deprecated
+    image: appleboy/drone-ssh
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      HOST: pkd.staging.cosmos.care
+    settings:
+      host: stag.do.cosmos.care
+      username: root
+      port: 22
+      command_timeout: 3m
+      script_stop: true
+      key:
+        from_secret: ssh_key
+      envs:
+        - DOCKERHUB_USERNAME
+        - DOCKERHUB_PASSWORD
+        - HOST
+      script:
+        - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+        - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker container stop tadpole-staging || true
+        - docker container rm tadpole-staging || true
+        - docker container run -d
+          --name tadpole-staging
+          --restart=unless-stopped
+          --log-driver fluentd
+          -e "VIRTUAL_PORT=3000"
+          -e "VIRTUAL_HOST=$HOST"
+          -e "LETSENCRYPT_HOST=$HOST"
+          cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker image prune -a -f && docker system prune -a -f
+
+  - name: deployment
+    image: appleboy/drone-ssh
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: dockerhub_username
+      DOCKERHUB_PASSWORD:
+        from_secret: dockerhub_password
+      HOST: pkd.staging.cosmos.care
+    settings:
+      host: pkd-stag.do.cosmos.care
+      username: root
+      port: 22
+      command_timeout: 3m
+      script_stop: true
+      key:
+        from_secret: ssh_key
+      envs:
+        - DOCKERHUB_USERNAME
+        - DOCKERHUB_PASSWORD
+        - HOST
+      script:
+        - docker login --username=$DOCKERHUB_USERNAME --password=$DOCKERHUB_PASSWORD
+        - docker pull cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker container stop tadpole-staging || true
+        - docker container rm tadpole-staging || true
+        - docker container run -d
+          --name tadpole-staging
+          --restart=unless-stopped
+          --log-driver fluentd
+          -e "VIRTUAL_PORT=3000"
+          -e "VIRTUAL_HOST=$HOST"
+          -e "LETSENCRYPT_HOST=$HOST"
+          cosmosummc/tadpole:${DRONE_COMMIT_SHA:0:7}
+        - docker image prune -a -f && docker system prune -a -f

@@ -320,31 +320,24 @@ const myDataProvider = {
         console.log(params);
 
         // below is for swabs:create and patients:create only
-        if (resource === 'wikipedias' || resource === 'patients' || resource === 'users' ||
-            resource === 'examinations' || resource === 'histories' || resource === 'investigations' ||
-            resource === 'kases' || resource === 'results') {
+        if (resource === 'questions' || resource === 'patients' || resource === 'users' ||
+            resource === 'consultants' || resource === 'declarations' || resource === 'meetings') {
 
             // - append /patientId at end
             let url = '';
-            if (resource === 'wikipedias') {
+            if (resource === 'questions') {
                 url = `${apiUrl}/${resource}/0`;
             } else if (resource === 'patients') {
                 url = `${apiUrl}/${resource}/${params.data.id}`
             } else if (resource === 'users') {
                 url = `${apiUrl}/${resource}/0`
-            } else if (resource === 'examinations') {
+            } else if (resource === 'consultants') {
                 url = `${apiUrl}/${resource}/0`
-            } else if (resource === 'histories') {
+            } else if (resource === 'declarations') {
                 url = `${apiUrl}/${resource}/0`
-            } else if (resource === 'investigations') {
-                url = `${apiUrl}/${resource}/0`
-            } else if (resource === 'kases') {
-                url = `${apiUrl}/${resource}/0`
-            } else if (resource === 'results') {
+            } else if (resource === 'meetings') {
                 url = `${apiUrl}/${resource}/0`
             }
-
-            console.log('here?');
 
             return new Promise((resolve, reject) => {
                 httpClient(url, {

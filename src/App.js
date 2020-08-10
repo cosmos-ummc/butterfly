@@ -11,12 +11,10 @@ import customRoutes from "./custom_routes/customRoutes"
 import 'react-vis/dist/style.css';
 
 import {UserList, UserCreate, UserEdit} from './components/users'
-import {WikipediaCreate, WikipediaEdit, WikipediaList} from "./components/wikipedias";
-import {ExaminationCreate, ExaminationEdit, ExaminationList} from "./components/examinations";
-import {HistoryCreate, HistoryEdit, HistoryList} from "./components/histories";
-import {InvestigationCreate, InvestigationEdit, InvestigationList} from "./components/investigations";
-import {CaseCreate, CaseEdit, CaseList} from "./components/kases";
-import {ResultCreate, ResultList, ResultShow} from "./components/results";
+import {QuestionCreate, QuestionEdit, QuestionList} from "./components/questions";
+import {DeclarationEdit, DeclarationList} from "./components/declarations";
+import {MeetingCreate, MeetingEdit, MeetingList} from "./components/meetings";
+import {PatientCreate, PatientList, PatientShow} from "./components/patients";
 
 const getThemeBasedOnEnv = () => {
     let theme = {
@@ -42,22 +40,20 @@ const getThemeBasedOnEnv = () => {
 };
 
 const RESOURCES = [
-    <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit}/>,
-    <Resource name="wikipedias" list={WikipediaList} create={WikipediaCreate} edit={WikipediaEdit}
-              options={{label: 'Glossary'}}/>,
-    <Resource name="examinations" list={ExaminationList} create={ExaminationCreate} edit={ExaminationEdit}/>,
-    <Resource name="histories" list={HistoryList} create={HistoryCreate} edit={HistoryEdit}/>,
-    <Resource name="investigations" list={InvestigationList} create={InvestigationCreate} edit={InvestigationEdit}/>,
-    <Resource name="kases" list={CaseList} create={CaseCreate} edit={CaseEdit} options={{label: 'Cases'}}/>,
-    <Resource name="results" list={ResultList} create={ResultCreate} show={ResultShow}/>
+    <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} options={{label: 'Admins'}}/>,
+    <Resource name="questions" list={QuestionList} create={QuestionCreate} edit={QuestionEdit}
+              options={{label: 'Questions'}}/>,
+    <Resource name="consultants" list={UserList} create={UserCreate} edit={UserEdit} options={{label: 'Consultants'}}/>,
+    <Resource name="patients" list={PatientList} create={PatientCreate} show={PatientShow} options={{label: 'Users'}}/>,
+    <Resource name="declarations" options={{label: "Reports"}} edit={DeclarationEdit} list={DeclarationList}/>,
+    <Resource name="meetings" list={MeetingList} create={MeetingCreate} edit={MeetingEdit}
+              options={{label: 'Meetings'}}/>
 ];
 
 const RESOURCE_AVAILABLE = {
-    "superuser": ["users", "wikipedias", "examinations", "histories", "investigations", "kases", "results"],
-    "admin": ["users", "wikipedias", "examinations", "histories", "investigations", "kases", "results"],
-    "consultant": ["users", "wikipedias", "examinations", "histories", "investigations", "kases", "results"],
+    "superuser": ["users", "questions", "consultants", "patients", "declarations", "meetings"],
+    "consultant": ["consultants", "patients", "declarations", "meetings"],
     "guest": ["users"],
-    "student": ["users"],
 };
 
 const fetchResources = () =>

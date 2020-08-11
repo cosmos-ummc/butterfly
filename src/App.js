@@ -55,6 +55,7 @@ const RESOURCES = [
               options={{label: 'Health Feeds'}}/>
 ];
 
+
 const RESOURCE_AVAILABLE = {
     "superuser": ["users", "questions", "feeds", "consultants", "patients", "declarations", "meetings"],
     "consultant": ["consultants", "patients", "declarations", "meetings"],

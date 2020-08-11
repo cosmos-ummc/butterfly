@@ -11,4 +11,10 @@ export const messagePopupStrings = {
     PATIENT_UPDATED: 'User Record Updated',
     CONSULTANT_CREATED: 'Consultant Record Created',
     CONSULTANT_UPDATED: 'Consultant Record Updated',
+    FEED_CREATED: 'Health Feed Record Created',
+    FEED_UPDATED: 'Health Feed Record Updated',
+    GAME_CREATED: 'Game Record Created',
+    GAME_UPDATED: 'Game Record Updated',
+    MEDITATION_CREATED: 'Meditation Record Created',
+    MEDITATION_UPDATED: 'Meditation Record Updated',
 };

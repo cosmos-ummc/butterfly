@@ -18,7 +18,7 @@ export const FeedList = props => (
     <List
         filters={<CustomFilter/>}
         {...props}
-        title={"Health Feed"}>
+        title={"Health Feeds"}>
         <Datagrid rowClick='show'>
             <TextField source="title"/>
             <SelectField source="type" choices={PATIENT_MENTAL_STATUS}/>
@@ -27,7 +27,7 @@ export const FeedList = props => (
 );
 
 export const FeedCreate = props => (
-    <Create undoable={false} {...props} successMessage={STRING.FEED_CREATED} title={"Health Feeds"}>
+    <Create undoable={false} {...props} successMessage={STRING.FEED_CREATED} title={"Health Feed"}>
         <SimpleForm>
             <TextInput source="title" fullWidth/>
             <TextInput source="description" fullWidth multiline/>

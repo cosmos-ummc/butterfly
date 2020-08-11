@@ -7,16 +7,9 @@ import {
     TextField,
     SimpleForm,
     TextInput,
-    SelectInput,
-    SelectField,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
-
-export const GAME_TYPE = [
-    {id: "android", name: "Android"},
-    {id: "ios", name: "iOS"},
-];
 
 export const GameList = props => (
     <List
@@ -24,8 +17,8 @@ export const GameList = props => (
         {...props}
         title={"Games"}>
         <Datagrid rowClick='show'>
-            <TextField source="link"/>
-            <SelectField source="type" choices={GAME_TYPE}/>
+            <TextField source="linkAdr" label="Android Link"/>
+            <TextField source="linkIos" label="iOS Link"/>
         </Datagrid>
     </List>
 );
@@ -33,9 +26,10 @@ export const GameList = props => (
 export const GameCreate = props => (
     <Create undoable={false} {...props} successMessage={STRING.GAME_CREATED} title={"Game"}>
         <SimpleForm>
-            <TextInput source="link"/>
-            <TextInput source="imgPath" label="Image Path"/>
-            <SelectInput source="type" choices={GAME_TYPE} initialValue={'android'}/>
+            <TextInput source="imgPathAdr" label="Android Image Path"/>
+            <TextInput source="linkAdr" label="Android Link"/>
+            <TextInput source="imgPathIos" label="iOS Image Path"/>
+            <TextInput source="linkIos" label="iOS Link"/>
         </SimpleForm>
     </Create>
 );
@@ -43,9 +37,10 @@ export const GameCreate = props => (
 export const GameEdit = props => (
     <Edit undoable={false} {...props} successMessage={STRING.GAME_UPDATED}>
         <SimpleForm>
-            <TextInput source="link"/>
-            <TextInput source="imgPath" label="Image Path"/>
-            <SelectInput source="type" choices={GAME_TYPE}/>
+            <TextInput source="imgPathAdr" label="Android Image Path"/>
+            <TextInput source="linkAdr" label="Android Link"/>
+            <TextInput source="imgPathIos" label="iOS Image Path"/>
+            <TextInput source="linkIos" label="iOS Link"/>
         </SimpleForm>
     </Edit>
 );

@@ -9,9 +9,7 @@ import {
     SelectInput,
     SelectField,
     ReferenceField,
-    SimpleFormIterator,
     ArrayField,
-    ReferenceInput,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";

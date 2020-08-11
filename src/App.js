@@ -16,6 +16,7 @@ import {DeclarationEdit, DeclarationList} from "./components/declarations";
 import {MeetingCreate, MeetingEdit, MeetingList} from "./components/meetings";
 import {PatientCreate, PatientList, PatientShow} from "./components/patients";
 import {ConsultantCreate, ConsultantList, ConsultantShow} from "./components/consultants";
+import {FeedCreate, FeedEdit, FeedList} from "./components/feeds";
 
 const getThemeBasedOnEnv = () => {
     let theme = {
@@ -49,12 +50,13 @@ const RESOURCES = [
               options={{label: 'Meetings'}}/>,
     <Resource name="declarations" options={{label: "Reports"}} edit={DeclarationEdit} list={DeclarationList}/>,
     <Resource name="questions" list={QuestionList} create={QuestionCreate} edit={QuestionEdit}
-              options={{label: 'Questions'}}/>
-
+              options={{label: 'Questions'}}/>,
+    <Resource name="feeds" list={FeedList} create={FeedCreate} edit={FeedEdit}
+              options={{label: 'Health Feeds'}}/>
 ];
 
 const RESOURCE_AVAILABLE = {
-    "superuser": ["users", "questions", "consultants", "patients", "declarations", "meetings"],
+    "superuser": ["users", "questions", "feeds", "consultants", "patients", "declarations", "meetings"],
     "consultant": ["consultants", "patients", "declarations", "meetings"],
     "guest": ["users"],
 };
@@ -63,31 +65,6 @@ const fetchResources = () =>
     authProvider.getPermissions().then(role =>
         RESOURCES.filter(resource => RESOURCE_AVAILABLE[role].includes(resource.props.name))
     );
-
-
-const HeaderEnvIndicator = () => {
-    const elem = (text) => (
-        <div style={{
-            position: 'fixed', top: 0, left: '50%', marginLeft: '-110px', zIndex: 100,
-            display: 'inline-block',
-            width: '220px',
-            padding: 1,
-            backgroundColor: 'red',
-            color: 'white',
-            border: '2px solid black',
-            borderTop: '',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontSize: '0.7em',
-        }}>{text}</div>
-    );
-    switch (process.env.REACT_APP_ENV) {
-        case 'dev':
-            return elem('DEVELOPMENT ENVIRONMENT');
-        default: // production
-            return '';
-    }
-};
 
 // Do not add resource inside Admin element
 // add to RESOURCES array instead
@@ -103,8 +80,6 @@ const App = () => (
         >
             {fetchResources}
         </Admin>
-
-        <HeaderEnvIndicator/>
 
         <div style={{
             position: 'fixed', right: 0, bottom: 0, left: 0, zIndex: 100,

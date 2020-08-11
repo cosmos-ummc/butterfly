@@ -9,6 +9,8 @@ import {
     TextInput,
     SelectInput,
     SelectField,
+    Show,
+    SimpleShowLayout,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
@@ -25,11 +27,19 @@ const QUESTION_TYPE = [
     {id: "depression", name: 'Depression'},
 ];
 
+const QuestionExtentList = (props, resource, basePath) => (
+    <Show {...props} title={" "}>
+        <SimpleShowLayout>
+            <TextField source="id"/>
+        </SimpleShowLayout>
+    </Show>
+);
+
 export const QuestionList = props => (
     <List
         filters={<CustomFilter/>}
         {...props}>
-        <Datagrid rowClick='show'>
+        <Datagrid rowClick='show' expand={<QuestionExtentList/>}>
             <SelectField source="category" choices={QUESTION_CATEGORY}/>
             <SelectField source="type" choices={QUESTION_TYPE}/>
             <TextField source="content"/>

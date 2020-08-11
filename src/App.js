@@ -15,6 +15,7 @@ import {QuestionCreate, QuestionEdit, QuestionList} from "./components/questions
 import {DeclarationEdit, DeclarationList} from "./components/declarations";
 import {MeetingCreate, MeetingEdit, MeetingList} from "./components/meetings";
 import {PatientCreate, PatientList, PatientShow} from "./components/patients";
+import {ConsultantCreate, ConsultantList, ConsultantShow} from "./components/consultants";
 
 const getThemeBasedOnEnv = () => {
     let theme = {
@@ -41,13 +42,15 @@ const getThemeBasedOnEnv = () => {
 
 const RESOURCES = [
     <Resource name="users" list={UserList} create={UserCreate} edit={UserEdit} options={{label: 'Admins'}}/>,
-    <Resource name="questions" list={QuestionList} create={QuestionCreate} edit={QuestionEdit}
-              options={{label: 'Questions'}}/>,
-    <Resource name="consultants" list={UserList} create={UserCreate} edit={UserEdit} options={{label: 'Consultants'}}/>,
+    <Resource name="consultants" list={ConsultantList} create={ConsultantCreate} show={ConsultantShow}
+              options={{label: 'Consultants'}}/>,
     <Resource name="patients" list={PatientList} create={PatientCreate} show={PatientShow} options={{label: 'Users'}}/>,
-    <Resource name="declarations" options={{label: "Reports"}} edit={DeclarationEdit} list={DeclarationList}/>,
     <Resource name="meetings" list={MeetingList} create={MeetingCreate} edit={MeetingEdit}
-              options={{label: 'Meetings'}}/>
+              options={{label: 'Meetings'}}/>,
+    <Resource name="declarations" options={{label: "Reports"}} edit={DeclarationEdit} list={DeclarationList}/>,
+    <Resource name="questions" list={QuestionList} create={QuestionCreate} edit={QuestionEdit}
+              options={{label: 'Questions'}}/>
+
 ];
 
 const RESOURCE_AVAILABLE = {

@@ -10,7 +10,7 @@ import {
     SelectField,
     ReferenceField,
     SimpleFormIterator,
-    ArrayInput,
+    ArrayField,
     ReferenceInput,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
@@ -43,16 +43,16 @@ export const DeclarationList = props => (
             <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
                 <TextField source="id"/>
             </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
+            <ReferenceField source="patientId" reference="patients" label="Name" link="show">
                 <TextField source="name"/>
             </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
+            <ReferenceField source="patientId" reference="patients" label="Phone Number" link="show">
                 <TextField source="phoneNumber"/>
             </ReferenceField>
             <SelectField source="category" choices={DECLARATION_CATEGORY}/>
             <TextField source="score"/>
             <SelectField source="status" choices={DECLARATION_STATUS}/>
-            <MyDateField source="submittedAt" showTime/>
+            <MyDateField source="submittedAt" showTime label="Submitted At"/>
         </Datagrid>
     </List>
 );
@@ -61,17 +61,24 @@ export const DeclarationEdit = props => (
     <Edit undoable={false} {...props} successMessage={STRING.DECLARATION_UPDATED} title={"Report #" + props.id}>
         <SimpleForm>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
-            <TextInput source="patientId" disabled label="NRIC/Passport"/>
-            <TextInput source="patientName" disabled label="Name"/>
-            <TextInput source="patientPhoneNumber" disabled label="Phone"/>
-            <ArrayInput source="result" label="Results">
-                <SimpleFormIterator>
-                    <ReferenceInput label="Question" source="id" reference="questions" disabled>
-                        <TextInput source="content" disabled/>
-                    </ReferenceInput>
-                    <TextInput source="score" disabled/>
-                </SimpleFormIterator>
-            </ArrayInput>
+            <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
+                <TextField source="id"/>
+            </ReferenceField>
+            <ReferenceField source="patientId" reference="patients" label="Name" link="show">
+                <TextField source="name"/>
+            </ReferenceField>
+            <ReferenceField source="patientId" reference="patients" label="Phone Number" link="show">
+                <TextField source="phoneNumber"/>
+            </ReferenceField>
+            <ArrayField source="result" label="Results">
+                <Datagrid>
+                    <ReferenceField source="id" reference="questions" label="Question" link="show">
+                        <TextField source="content"/>
+                    </ReferenceField>
+                    <TextField source="score"/>
+                </Datagrid>
+            </ArrayField>
+
             <SelectInput source="category" choices={DECLARATION_CATEGORY} initialValue={'dass'} disabled/>
             <TextInput source="score" disabled/>
             <SelectInput source="status" choices={DECLARATION_STATUS} initialValue={'1'} disabled/>

@@ -16,16 +16,23 @@ import {
     TabbedShowLayout,
     Tab,
     SimpleShowLayout,
+    RichTextField,
+    NumberInput,
+    BooleanInput,
+    BooleanField, ReferenceField,
+    NumberField,
 } from "react-admin";
 import RichTextInput from 'ra-input-rich-text';
 import {makeStyles} from "@material-ui/core/styles";
-import {MyDateField} from "./common/dateField";
+import {MyDateField, MyDateOnlyField} from "./common/dateField";
 import {
     DECLARATION_STATUS, DECLARATION_CATEGORY,
 } from "./declarations";
 import {rowStyle} from "./common/rowStyle";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
+import DatePicker from "./common/datePicker";
+import {MEETING_STATUS} from "./meetings";
 
 export const PATIENT_TYPE = [
     {id: "1", name: "PUI"},
@@ -33,6 +40,21 @@ export const PATIENT_TYPE = [
     {id: "3", name: "HCW"},
     {id: "4", name: "Patient"},
     {id: "5", name: "Others"},
+];
+
+export const PATIENT_MENTAL_STATUS = [
+    {id: "0", name: "Not Categorized"},
+    {id: "1", name: "Depression"},
+    {id: "2", name: "Anxiety"},
+    {id: "3", name: "Stress"},
+    {id: "4", name: "PTSD"},
+];
+
+export const PATIENT_SWAB_RESULT = [
+    {id: "0", name: "None"},
+    {id: "1", name: "Pending"},
+    {id: "2", name: "Positive"},
+    {id: "3", name: "Negative"},
 ];
 
 const useStyles = makeStyles({
@@ -55,10 +77,14 @@ const PatientExtentList = (props, resource, basePath) => (
             <TextField source="homeAddress" multiline/>
             <TextField source="isolationAddress" multiline/>
             <MyDateField source="lastDassTime" showTime label="Last DASS Time"/>
-            <SelectField source="lastDassResult" choices={DECLARATION_STATUS} label="Last DASS Result"/>
+            <NumberField source="lastDassResult" label="Last DASS Result"/>
             <MyDateField source="lastIesrTime" showTime label="Last IES-R Time"/>
-            <SelectField source="lastIesrResult" choices={DECLARATION_STATUS} label="Last IES-R Result"/>
-            <TextField source="remarks" multiline/>
+            <NumberField source="lastIesrResult" label="Last IES-R Result"/>
+            <BooleanField source="hasCompleted"/>
+            <SelectField source="mentalStatus" choices={PATIENT_MENTAL_STATUS}/>
+            <MyDateOnlyField source="swabDate" label="Swab Date"/>
+            <SelectField source="swabResult" choices={PATIENT_SWAB_RESULT}/>
+            <RichTextField source="remarks" multiline/>
         </SimpleShowLayout>
     </Show>
 );
@@ -82,6 +108,7 @@ export const PatientList = ({permissions, ...props}) => {
                 <SelectField source="type" choices={PATIENT_TYPE}/>
                 <SelectField source="status" choices={DECLARATION_STATUS}/>
                 <TextField source="daySinceMonitoring"/>
+                <BooleanField source="hasCompleted"/>
             </Datagrid>
         </List>
     );
@@ -98,6 +125,8 @@ export const PatientCreate = (props) => {
                 <SelectInput source="type" choices={PATIENT_TYPE} initialValue='1'/>
                 <TextInput source="homeAddress"/>
                 <TextInput source="isolationAddress"/>
+                <DatePicker source="swabDate" enableinitialvalue="true"/>
+                <SelectInput source="swabResult" choices={PATIENT_SWAB_RESULT} initialValue='0'/>
             </SimpleForm>
         </Create>
     );
@@ -127,6 +156,11 @@ export class PatientShow extends React.Component {
                                 <SelectInput source="type" choices={PATIENT_TYPE} initialValue='1'/>
                                 <TextInput source="homeAddress"/>
                                 <TextInput source="isolationAddress"/>
+                                <NumberInput source="daySinceMonitoring"/>
+                                <BooleanInput source="hasCompleted"/>
+                                <SelectInput source="mentalStatus" choices={PATIENT_MENTAL_STATUS} initialValue='0'/>
+                                <DatePicker source="swabDate" enableinitialvalue="true"/>
+                                <SelectInput source="swabResult" choices={PATIENT_SWAB_RESULT} initialValue='0'/>
                                 <RichTextInput source="remarks"/>
                             </SimpleForm>
                         </Edit>
@@ -137,11 +171,12 @@ export class PatientShow extends React.Component {
                             target="patientId"
                             addLabel={false}
                             sort={{field: "submittedAt", order: "DESC"}}
+                            link="show"
                         >
                             <List bulkActionButtons={false} filter={{patientId: this.props.id}}
                                   sort={{field: "submittedAt", order: "DESC"}}>
                                 <Datagrid>
-                                    <MyDateField source="submittedAt" showTime/>
+                                    <MyDateField source="submittedAt" showTime label="Submitted At"/>
                                     <SelectField source="category" choices={DECLARATION_CATEGORY}/>
                                     <TextField source="score"/>
                                     <SelectField source="status" choices={DECLARATION_STATUS}/>
@@ -150,6 +185,28 @@ export class PatientShow extends React.Component {
                                         multiline
                                         label="Doctor's Note"
                                     />
+                                </Datagrid>
+                            </List>
+                        </ReferenceManyField>
+                    </Tab>
+                    <Tab label="Meetings" path="meetings">
+                        <ReferenceManyField
+                            reference="meetings"
+                            target="patientId"
+                            addLabel={false}
+                            sort={{field: "time", order: "DESC"}}
+                        >
+                            <List bulkActionButtons={false} filter={{patientId: this.props.id}}
+                                  sort={{field: "time", order: "DESC"}}>
+                                <Datagrid>
+                                    <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Name">
+                                        <TextField source="name"/>
+                                    </ReferenceField>
+                                    <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Phone Number">
+                                        <TextField source="phoneNumber"/>
+                                    </ReferenceField>
+                                    <SelectField source="status" choices={MEETING_STATUS}/>
+                                    <TextField source="time"/>
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>

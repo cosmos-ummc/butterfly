@@ -7,15 +7,14 @@ import {
     TextField,
     SimpleForm,
     SelectInput,
-    SelectField, ReferenceField, ReferenceInput,
+    SelectField, ReferenceField, ReferenceInput, TextInput,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
-import {MyDateField} from "./common/dateField";
 
-const MEETING_STATUS = [
-    {id: "pending", name: 'Pending'},
-    {id: "accepted", name: 'Accepted'},
+export const MEETING_STATUS = [
+    {id: "1", name: 'Pending'},
+    {id: "2", name: 'Accepted'},
 ];
 
 let timeInput = [
@@ -30,18 +29,23 @@ export const MeetingList = props => (
         sort={{field: 'time', order: 'DESC'}}
     >
         <Datagrid rowClick='show'>
-            <ReferenceField source="patientId" reference="patients" link="show">
+            <ReferenceField source="patientId" reference="patients" link="show" label="User IC/Passport">
                 <TextField source="id"/>
+            </ReferenceField>
+            <ReferenceField source="patientId" reference="patients" link="show" label="User Name">
                 <TextField source="name"/>
+            </ReferenceField>
+            <ReferenceField source="patientId" reference="patients" link="show" label="User Phone Number">
                 <TextField source="phoneNumber"/>
             </ReferenceField>
-            <ReferenceField source="consultantId" reference="consultants" link="show">
-                <TextField source="id"/>
+            <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Name">
                 <TextField source="name"/>
+            </ReferenceField>
+            <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Phone Number">
                 <TextField source="phoneNumber"/>
             </ReferenceField>
             <SelectField source="status" choices={MEETING_STATUS}/>
-            <MyDateField source="time" showTime/>
+            <TextField source="time"/>
         </Datagrid>
     </List>
 );
@@ -56,7 +60,7 @@ export const MeetingCreate = props => (
                 <SelectInput optionText="name"/>
             </ReferenceInput>
             <SelectInput source="time" choices={timeInput} initialValue={'2020-08-10 2.00 pm - 4.00 pm'}/>
-            <SelectInput source="status" choices={MEETING_STATUS} initialValue={'pending'}/>
+            <SelectInput source="status" choices={MEETING_STATUS} initialValue={'1'}/>
         </SimpleForm>
     </Create>
 );
@@ -70,8 +74,8 @@ export const MeetingEdit = props => (
             <ReferenceInput label="Consultant" source="consultantId" reference="consultants">
                 <SelectInput optionText="name"/>
             </ReferenceInput>
-            <SelectInput source="time" choices={timeInput} initialValue={'2020-08-10 2.00 pm - 4.00 pm'}/>
-            <SelectInput source="status" choices={MEETING_STATUS} initialValue={'pending'}/>
+            <TextInput source="time" disabled/>
+            <SelectInput source="status" choices={MEETING_STATUS} initialValue={'1'}/>
         </SimpleForm>
     </Edit>
 );

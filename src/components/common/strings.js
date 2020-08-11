@@ -9,4 +9,6 @@ export const messagePopupStrings = {
     MEETING_UPDATED: 'Meeting Record Updated',
     PATIENT_CREATED: 'User Record Created',
     PATIENT_UPDATED: 'User Record Updated',
+    CONSULTANT_CREATED: 'Consultant Record Created',
+    CONSULTANT_UPDATED: 'Consultant Record Updated',
 };

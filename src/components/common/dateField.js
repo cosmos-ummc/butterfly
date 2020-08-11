@@ -16,7 +16,7 @@ export const MyDateField = props => {
     }
     return (
         <span>
-            <TextField emptyText={props.label + ": "}/>
+            <TextField emptyText={props.label + (!!props.label ? ": " : "")}/>
             <DateField {...props} record={newRecord} locales='en-GB'/>
             <TodayIconField date={date} dateFormat='DATE_AND_TIME'/>
         </span>

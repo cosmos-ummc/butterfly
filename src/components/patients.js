@@ -20,7 +20,7 @@ import {
     NumberInput,
     BooleanInput,
     BooleanField, ReferenceField,
-    NumberField,
+    NumberField, useNotify, HttpError,
 } from "react-admin";
 import RichTextInput from 'ra-input-rich-text';
 import {makeStyles} from "@material-ui/core/styles";
@@ -33,6 +33,8 @@ import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
 import DatePicker from "./common/datePicker";
 import {MEETING_STATUS} from "./meetings";
+import {apiUrl, httpClient} from "../data_provider/dataProvider";
+import Button from "@material-ui/core/Button";
 
 export const PATIENT_TYPE = [
     {id: "1", name: "PUI"},
@@ -63,6 +65,117 @@ const useStyles = makeStyles({
         justifyContent: "space-between",
     },
 });
+
+const PatientEventButton = props => {
+    const url = apiUrl + `/client/patients/message`;
+    const notify = useNotify();
+
+    const patientEvent = () => {
+        httpClient(url, {
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    id: props.id,
+                },
+            ),
+        })
+            .then(response => ({
+                status: response.status,
+                headers: response.headers,
+                id: response.json.id
+            }))
+            .then((data) => {
+                if (!data.ok) {
+                    notify("Telegram ID not found. Please ensure that you have linked the phone number to the Telegram Bot.");
+                } else {
+                    notify("Telegram Bot day 7 reminder has been sent to the selected user.");
+                }
+            })
+            .catch(err => {
+                notify("Failed to send reminder due to server error.", "warning");
+            });
+    };
+    return (
+        <div>
+            <Button variant='contained' style={{background: 'orange', marginBottom: 20}} onClick={patientEvent}>Trigger
+                Patient
+                Follow Up Reminder Event</Button>
+        </div>
+    )
+};
+
+const ForcePatientCompleteButton = props => {
+    const url = apiUrl + `/client/patients/complete`;
+    const notify = useNotify();
+
+    const verifyPatientComplete = () => {
+        httpClient(url, {
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    id: props.id,
+                    force: true,
+                },
+            ),
+        })
+            .then(response => ({
+                status: response.status,
+                headers: response.headers,
+                id: response.json.id
+            }))
+            .then((data) => {
+                notify("User has completed monitoring, reminder has been sent to the user via Telegram Bot.");
+            })
+            .catch(err => {
+                notify("Failed to check due to server error.", "warning");
+            });
+    };
+    return (
+        <div>
+            <Button variant='contained' style={{background: 'orange'}} onClick={verifyPatientComplete}>Trigger Patient
+                Complete Monitoring Event</Button>
+        </div>
+    )
+};
+
+const VerifyPatientCompleteButton = props => {
+    const url = apiUrl + `/client/patients/complete`;
+    const notify = useNotify();
+
+    const verifyPatientComplete = () => {
+        httpClient(url, {
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    id: props.id,
+                    force: false,
+                },
+            ),
+        })
+            .then(response => ({
+                status: response.status,
+                headers: response.headers,
+                id: response.json.id
+            }))
+            .then((data) => {
+                if (data.hasCompleted) {
+                    notify("User has completed monitoring, reminder has been sent to the user via Telegram Bot.");
+                } else {
+                    notify("User has not completed monitoring, user needs to achieve the following criteria: days since monitoring > 14, PUI / PUS and swab result negative.");
+                }
+            })
+            .catch(err => {
+                notify("Failed to check due to server error.", "warning");
+            });
+    };
+    return (
+        <div>
+            <Button variant='contained' style={{background: 'orange', marginBottom: 20}}
+                    onClick={verifyPatientComplete}>Evaluate if User
+                has Completed Monitoring</Button>
+        </div>
+    )
+};
 
 const CustomToolbar = (props) => (
     <Toolbar {...props} classes={useStyles()}>
@@ -162,6 +275,9 @@ export class PatientShow extends React.Component {
                                 <DatePicker source="swabDate" enableinitialvalue="true"/>
                                 <SelectInput source="swabResult" choices={PATIENT_SWAB_RESULT} initialValue='0'/>
                                 <RichTextInput source="remarks"/>
+                                <PatientEventButton id={this.props.id}/>
+                                <VerifyPatientCompleteButton id={this.props.id}/>
+                                <ForcePatientCompleteButton id={this.props.id}/>
                             </SimpleForm>
                         </Edit>
                     </Tab>
@@ -199,10 +315,12 @@ export class PatientShow extends React.Component {
                             <List bulkActionButtons={false} filter={{patientId: this.props.id}}
                                   sort={{field: "time", order: "DESC"}}>
                                 <Datagrid>
-                                    <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Name">
+                                    <ReferenceField source="consultantId" reference="consultants" link="show"
+                                                    label="Consultant Name">
                                         <TextField source="name"/>
                                     </ReferenceField>
-                                    <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Phone Number">
+                                    <ReferenceField source="consultantId" reference="consultants" link="show"
+                                                    label="Consultant Phone Number">
                                         <TextField source="phoneNumber"/>
                                     </ReferenceField>
                                     <SelectField source="status" choices={MEETING_STATUS}/>

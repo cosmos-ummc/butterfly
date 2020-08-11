@@ -20,7 +20,7 @@ import {
     NumberInput,
     BooleanInput,
     BooleanField, ReferenceField,
-    NumberField, useNotify, HttpError,
+    NumberField, useNotify,
 } from "react-admin";
 import RichTextInput from 'ra-input-rich-text';
 import {makeStyles} from "@material-ui/core/styles";
@@ -98,7 +98,7 @@ const PatientEventButton = props => {
     return (
         <div>
             <Button variant='contained' style={{background: 'orange', marginBottom: 20}} onClick={patientEvent}>Trigger
-                Patient
+                User
                 Follow Up Reminder Event</Button>
         </div>
     )
@@ -294,6 +294,9 @@ export class PatientShow extends React.Component {
                                 <Datagrid>
                                     <MyDateField source="submittedAt" showTime label="Submitted At"/>
                                     <SelectField source="category" choices={DECLARATION_CATEGORY}/>
+                                    <NumberField source="depression" label={"Depression Score"}/>
+                                    <NumberField source="anxiety" label={"Anxiety Score"}/>
+                                    <NumberField source="stress" label={"Stress Score"}/>
                                     <TextField source="score"/>
                                     <SelectField source="status" choices={DECLARATION_STATUS}/>
                                     <TextField

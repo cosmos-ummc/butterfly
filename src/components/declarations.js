@@ -10,6 +10,8 @@ import {
     SelectField,
     ReferenceField,
     ArrayField,
+    NumberField,
+    NumberInput,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
@@ -17,7 +19,7 @@ import {MyDateField} from "./common/dateField";
 
 export const DECLARATION_CATEGORY = [
     {id: "dass", name: 'DASS'},
-    {id: "iers", name: 'IES-R'},
+    {id: "iesr", name: 'IES-R'},
 ];
 
 export const DECLARATION_STATUS = [
@@ -48,7 +50,10 @@ export const DeclarationList = props => (
                 <TextField source="phoneNumber"/>
             </ReferenceField>
             <SelectField source="category" choices={DECLARATION_CATEGORY}/>
-            <TextField source="score"/>
+            <NumberField source="depression" label={"Depression Score"}/>
+            <NumberField source="anxiety" label={"Anxiety Score"}/>
+            <NumberField source="stress" label={"Stress Score"}/>
+            <NumberField source="score"/>
             <SelectField source="status" choices={DECLARATION_STATUS}/>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
         </Datagrid>
@@ -76,9 +81,11 @@ export const DeclarationEdit = props => (
                     <TextField source="score"/>
                 </Datagrid>
             </ArrayField>
-
             <SelectInput source="category" choices={DECLARATION_CATEGORY} initialValue={'dass'} disabled/>
-            <TextInput source="score" disabled/>
+            <NumberInput source="depression" label={"Depression Score"}/>
+            <NumberInput source="anxiety" label={"Anxiety Score"}/>
+            <NumberInput source="stress" label={"Stress Score"}/>
+            <NumberInput source="score" disabled/>
             <SelectInput source="status" choices={DECLARATION_STATUS} initialValue={'1'} disabled/>
             <TextInput
                 source="doctorRemarks"

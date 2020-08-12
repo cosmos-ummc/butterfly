@@ -35,6 +35,8 @@ import DatePicker from "./common/datePicker";
 import {MEETING_STATUS} from "./meetings";
 import {apiUrl, httpClient} from "../data_provider/dataProvider";
 import Button from "@material-ui/core/Button";
+import CustomBarChart from "./visualization/custom-bar-chart";
+import Grid from "@material-ui/core/Grid";
 
 export const PATIENT_TYPE = [
     {id: "1", name: "PUI"},
@@ -183,7 +185,7 @@ const CustomToolbar = (props) => (
     </Toolbar>
 );
 
-const PatientExtentList = (props, resource, basePath) => (
+const PatientExtentList = (props) => (
     // TODO: Add swab date and result
     <Show {...props} title={" "}>
         <SimpleShowLayout>
@@ -251,6 +253,58 @@ export const PatientCreate = (props) => {
 };
 
 export class PatientShow extends React.Component {
+
+    state = {
+        chartStressSeries: [0, 0],
+        chartDepressionSeries: [0, 0],
+        chartAnxietySeries: [0, 0],
+        chartPtsdSeries: [0, 0],
+        chartOptions: {
+            chart: {
+                id: "basic-bar"
+            },
+            xaxis: {
+                categories: ['First Assessment Score', 'Second Assessment Score']
+            }
+        },
+    };
+
+    componentDidMount() {
+        httpClient(`${apiUrl}/reports/${this.props.id}`)
+            .then((response) => ({
+                status: response.status,
+                headers: response.headers,
+                data: response.json.data,
+            }))
+            .then(({status, data}) => {
+                if (status < 200 || status >= 300) {
+                    console.log(status + data);
+                } else {
+                    // set stress series
+                    this.setState({chartStressSeries: [data.stressCount1, data.stressCount2]});
+                    // set depression series
+                    this.setState({chartDepressionSeries: [data.depressionCount1, data.depressionCount2]});
+                    // set anxiety series
+                    this.setState({chartAnxietySeries: [data.anxietyCount1, data.anxietyCount2]});
+                    // set ptsd series
+                    this.setState({chartPtsdSeries: [data.ptsdCount1, data.ptsdCount2]});
+                    // set comparison series
+                    this.setState({
+                        comparisonSeries: [{
+                            name: "Before Monitoring",
+                            data: [data.stressCount1, data.anxietyCount1, data.depressionCount1, data.ptsdCount1],
+                        }, {
+                            name: "After Monitoring",
+                            data: [data.stressCount2, data.anxietyCount2, data.depressionCount2, data.ptsdCount2],
+                        }]
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
     render() {
         return (
             <Show {...this.props} actions="" title={"User #" + this.props.id}>
@@ -306,7 +360,8 @@ export class PatientShow extends React.Component {
                                     <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
                                     <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
                                     <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
-                                    <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
+                                    <SelectField source="ptsdStatus" choices={DECLARATION_STATUS}
+                                                 label={"PTSD Status"}/>
                                     <TextField
                                         source="doctorRemarks"
                                         multiline
@@ -339,6 +394,24 @@ export class PatientShow extends React.Component {
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>
+                    </Tab>
+                    <Tab label="Results" path="results">
+                        <Grid container>
+                            <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
                     </Tab>
                 </TabbedShowLayout>
             </Show>

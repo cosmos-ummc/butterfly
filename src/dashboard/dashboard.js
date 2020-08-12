@@ -104,7 +104,7 @@ class Dashboard extends React.Component {
                 headers: response.headers,
                 data: response.json.data,
             }))
-            .then(({status, headers, data}) => {
+            .then(({status, data}) => {
                 if (status < 200 || status >= 300) {
                     console.log(status + data);
                 } else {
@@ -114,9 +114,9 @@ class Dashboard extends React.Component {
                     // set depression series
                     this.setState({chartDepressionSeries: [data.depressionNormal, data.depressionMild, data.depressionModerate, data.depressionSevere, data.depressionExtreme]});
                     // set anxiety series
-                    this.setState({chartAnxietySeries: [data.anxietyNormal, data.anxietyMild, data.anxietyModerate, data.anxietySevere, data.anxietyExtreme]})
+                    this.setState({chartAnxietySeries: [data.anxietyNormal, data.anxietyMild, data.anxietyModerate, data.anxietySevere, data.anxietyExtreme]});
                     // set ptsd series
-                    this.setState({chartPtsdSeries: [data.ptsdNormal, data.ptsdSevere]})
+                    this.setState({chartPtsdSeries: [data.ptsdNormal, data.ptsdSevere]});
                     // set comparison series
                     this.setState({
                         comparisonSeries: [{
@@ -126,7 +126,7 @@ class Dashboard extends React.Component {
                             name: "After Monitoring",
                             data: [data.stressCount2, data.anxietyCount2, data.depressionCount2, data.ptsdCount2],
                         }]
-                    })
+                    });
                 }
             })
             .catch((err) => {

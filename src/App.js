@@ -19,6 +19,7 @@ import {ConsultantCreate, ConsultantList, ConsultantShow} from "./components/con
 import {FeedCreate, FeedEdit, FeedList} from "./components/feeds";
 import {GameCreate, GameEdit, GameList} from "./components/games";
 import {MeditationCreate, MeditationEdit, MeditationList} from "./components/meditations";
+import {TipCreate, TipEdit, TipList} from "./components/tips";
 
 const getThemeBasedOnEnv = () => {
     let theme = {
@@ -58,11 +59,13 @@ const RESOURCES = [
     <Resource name="games" list={GameList} create={GameCreate} edit={GameEdit}
               options={{label: 'Games'}}/>,
     <Resource name="meditations" list={MeditationList} create={MeditationCreate} edit={MeditationEdit}
-              options={{label: 'Meditations'}}/>
+              options={{label: 'Meditations'}}/>,
+    <Resource name="tips" list={TipList} create={TipCreate} edit={TipEdit}
+              options={{label: 'Tips'}}/>
 ];
 
 const RESOURCE_AVAILABLE = {
-    "superuser": ["users", "questions", "feeds", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
+    "superuser": ["users", "questions", "feeds", "tips", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
     "consultant": ["consultants", "patients", "declarations", "meetings"],
     "guest": ["users"],
 };

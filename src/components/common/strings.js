@@ -17,4 +17,6 @@ export const messagePopupStrings = {
     GAME_UPDATED: 'Game Record Updated',
     MEDITATION_CREATED: 'Meditation Record Created',
     MEDITATION_UPDATED: 'Meditation Record Updated',
+    TIP_CREATED: 'Tip Record Created',
+    TIP_UPDATED: 'Tip Record Updated',
 };

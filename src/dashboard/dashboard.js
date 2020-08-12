@@ -144,19 +144,22 @@ class Dashboard extends React.Component {
                 <CardContent>
                     <Grid container style={{marginLeft: "50px"}}>
                         <Grid container>
-                            <CustomBarChart title={"DASS Stress Count"} propData={this.state.chartStressSeries}
+                            <h1>Overall Patient Records</h1>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS (Stress)"} propData={this.state.chartStressSeries}
                                             propOption={this.state.chartDassOptions} description={"Number of Users"}/>
                         </Grid>
                         <Grid container>
-                            <CustomBarChart title={"DASS Anxiety Count"} propData={this.state.chartAnxietySeries}
+                            <CustomBarChart title={"DASS (Anxiety)"} propData={this.state.chartAnxietySeries}
                                             propOption={this.state.chartDassOptions} description={"Number of Users"}/>
                         </Grid>
                         <Grid container>
-                            <CustomBarChart title={"DASS Depression Count"} propData={this.state.chartDepressionSeries}
+                            <CustomBarChart title={"DASS (Depression)"} propData={this.state.chartDepressionSeries}
                                             propOption={this.state.chartDassOptions} description={"Number of Users"}/>
                         </Grid>
                         <Grid container>
-                            <CustomBarChart title={"IES-R Count"} propData={this.state.chartPtsdSeries}
+                            <CustomBarChart title={"IES-R"} propData={this.state.chartPtsdSeries}
                                             propOption={this.state.chartIesrOptions} description={"Number of Users"}/>
                         </Grid>
                         <Grid container>

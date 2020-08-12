@@ -322,7 +322,7 @@ const myDataProvider = {
         // below is for swabs:create and patients:create only
         if (resource === 'questions' || resource === 'patients' || resource === 'users' ||
             resource === 'consultants' || resource === 'declarations' || resource === 'meetings' || resource === 'feeds' ||
-            resource === 'games' || resource === 'meditations') {
+            resource === 'games' || resource === 'meditations' || resource === 'tips') {
 
             // - append /patientId at end
             let url = '';
@@ -343,6 +343,8 @@ const myDataProvider = {
             } else if (resource === 'games') {
                 url = `${apiUrl}/${resource}/0`
             } else if (resource === 'meditations') {
+                url = `${apiUrl}/${resource}/0`
+            } else if (resource === 'tips') {
                 url = `${apiUrl}/${resource}/0`
             }
 

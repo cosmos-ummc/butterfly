@@ -341,7 +341,7 @@ export class PatientShow extends React.Component {
                             </SimpleForm>
                         </Edit>
                     </Tab>
-                    <Tab label="Reports" path="declarations">
+                    <Tab label="Test Reports" path="declarations">
                         <ReferenceManyField
                             reference="declarations"
                             target="patientId"
@@ -372,6 +372,73 @@ export class PatientShow extends React.Component {
                             </List>
                         </ReferenceManyField>
                     </Tab>
+                    <Tab label="Test Results" path="results">
+                        <Grid container>
+                            <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                    </Tab>
+                    <Tab label="Daily Care Reports" path="dailyquestions">
+                        <ReferenceManyField
+                            reference="declarations"
+                            target="patientId"
+                            addLabel={false}
+                            sort={{field: "submittedAt", order: "DESC"}}
+                            link="show"
+                        >
+                            <List bulkActionButtons={false} filter={{patientId: this.props.id}}
+                                  sort={{field: "submittedAt", order: "DESC"}}>
+                                <Datagrid>
+                                    <MyDateField source="submittedAt" showTime label="Submitted At"/>
+                                    <SelectField source="category" choices={DECLARATION_CATEGORY}/>
+                                    <NumberField source="depression" label={"Depression Score"}/>
+                                    <NumberField source="anxiety" label={"Anxiety Score"}/>
+                                    <NumberField source="stress" label={"Stress Score"}/>
+                                    <TextField source="score"/>
+                                    <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="ptsdStatus" choices={DECLARATION_STATUS}
+                                                 label={"PTSD Status"}/>
+                                    <TextField
+                                        source="doctorRemarks"
+                                        multiline
+                                        label="Doctor's Note"
+                                    />
+                                </Datagrid>
+                            </List>
+                        </ReferenceManyField>
+                    </Tab>
+                    <Tab label="Daily Care Results" path="dailyquestionsresults">
+                        <Grid container>
+                            <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
+                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                        </Grid>
+                    </Tab>
                     <Tab label="Meetings" path="meetings">
                         <ReferenceManyField
                             reference="meetings"
@@ -395,24 +462,6 @@ export class PatientShow extends React.Component {
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>
-                    </Tab>
-                    <Tab label="Results" path="results">
-                        <Grid container>
-                            <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
                     </Tab>
                 </TabbedShowLayout>
             </Show>

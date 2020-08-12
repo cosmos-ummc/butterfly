@@ -8,7 +8,7 @@ import {
     SimpleForm,
     TextInput,
     useNotify,
-    BooleanInput,
+    BooleanInput, SelectInput,
 } from "react-admin";
 
 import Button from '@material-ui/core/Button';
@@ -16,6 +16,11 @@ import Button from '@material-ui/core/Button';
 import {messagePopupStrings as STRING} from './common/strings';
 import {apiUrl, httpClient} from '../data_provider/dataProvider';
 import {CustomFilter} from "./filter";
+
+const USER_ROLE = [
+    {id: "admin", name: "Admin"},
+    {id: "superuser", name: "Superuser"},
+];
 
 export default function ResetPasswordButton(props) {
     const url = apiUrl + `/users/${props.id}/passwordreset`;
@@ -74,24 +79,26 @@ export const UserList = props => (
 );
 
 export const UserCreate = props => (
-    <Create undoable={false} {...props} successMessage={STRING.USER_CREATED} title={"Admins"}>
+    <Create undoable={false} {...props} successMessage={STRING.USER_CREATED} title={"Admin"}>
         <SimpleForm>
             <TextInput source="name"/>
             <TextInput source="email"/>
             <TextInput source="phoneNumber"/>
             <TextInput type={"password"} source="password"/>
             <TextInput type={"password"} source="cmfpassword" label="Confirm Password"/>
+            <SelectInput source="role" choices={USER_ROLE} initialValue='admin'/>
         </SimpleForm>
     </Create>
 );
 
 export const UserEdit = props => (
-    <Edit undoable={false} {...props} successMessage={STRING.USER_UPDATED} title={"Admin #" + props.id}>
+    <Edit undoable={false} {...props} successMessage={STRING.USER_UPDATED} title={"Admin"}>
         <SimpleForm>
             <TextInput source="name"/>
             <TextInput source="phoneNumber"/>
             <TextInput source="email"/>
             <BooleanInput source="verified"/>
+            <SelectInput source="role" choices={USER_ROLE} initialValue='admin'/>
             <ResetPasswordField/>
         </SimpleForm>
     </Edit>

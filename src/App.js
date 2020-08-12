@@ -66,7 +66,7 @@ const RESOURCES = [
 
 const RESOURCE_AVAILABLE = {
     "superuser": ["users", "questions", "feeds", "tips", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
-    "admin": ["consultants", "patients", "meetings", "declarations"],
+    "admin": ["users", "consultants", "patients", "meetings", "declarations"],
     "consultant": ["consultants", "patients", "declarations", "meetings"],
     "guest": ["users"],
 };
@@ -97,7 +97,8 @@ const App = () => (
             backgroundColor: '#efefef',
             textAlign: 'center',
             fontSize: '0.7em',
-        }}>For suggestions / help, please email <a href="mailto:helpdesk@xxx.com">helpdesk@xxx.com</a></div>
+        }}>For suggestions / help, please email <a href="mailto:helpdesk@quaranteams.tk">helpdesk@quaranteams.tk</a>
+        </div>
     </React.Fragment>
 );
 

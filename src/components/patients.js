@@ -247,6 +247,7 @@ export const PatientCreate = (props) => {
                 <TextInput source="isolationAddress"/>
                 <DatePicker source="swabDate" enableinitialvalue="true"/>
                 <SelectInput source="swabResult" choices={PATIENT_SWAB_RESULT} initialValue='0'/>
+                <TextInput type={"password"} source="password"/>
             </SimpleForm>
         </Create>
     );

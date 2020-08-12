@@ -63,6 +63,7 @@ export const ConsultantCreate = (props) => {
                 <TextInput source="name"/>
                 <TextInput source="phoneNumber"/>
                 <TextInput source="email"/>
+                <TextInput type={"password"} source="password"/>
             </SimpleForm>
         </Create>
     );

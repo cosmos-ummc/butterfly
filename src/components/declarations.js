@@ -23,7 +23,6 @@ export const DECLARATION_CATEGORY = [
 ];
 
 export const DECLARATION_STATUS = [
-    {id: "", name: '-'},
     {id: "0", name: '-'},
     {id: "1", name: 'Normal'},
     {id: "2", name: 'Mild'},
@@ -54,7 +53,10 @@ export const DeclarationList = props => (
             <NumberField source="anxiety" label={"Anxiety Score"}/>
             <NumberField source="stress" label={"Stress Score"}/>
             <NumberField source="score"/>
-            <SelectField source="status" choices={DECLARATION_STATUS}/>
+            <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
+            <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
+            <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
+            <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
         </Datagrid>
     </List>
@@ -81,12 +83,15 @@ export const DeclarationEdit = props => (
                     <TextField source="score"/>
                 </Datagrid>
             </ArrayField>
-            <SelectInput source="category" choices={DECLARATION_CATEGORY} initialValue={'dass'} disabled/>
+            <SelectInput source="category" choices={DECLARATION_CATEGORY} disabled/>
             <NumberInput source="depression" label={"Depression Score"}/>
             <NumberInput source="anxiety" label={"Anxiety Score"}/>
             <NumberInput source="stress" label={"Stress Score"}/>
             <NumberInput source="score" disabled/>
-            <SelectInput source="status" choices={DECLARATION_STATUS} initialValue={'1'} disabled/>
+            <SelectInput source="depressionStatus" choices={DECLARATION_STATUS} disabled/>
+            <SelectInput source="anxietyStatus" choices={DECLARATION_STATUS} disabled/>
+            <SelectInput source="stressStatus" choices={DECLARATION_STATUS} disabled/>
+            <SelectInput source="ptsdStatus" choices={DECLARATION_STATUS} disabled/>
             <TextInput
                 source="doctorRemarks"
                 multiline

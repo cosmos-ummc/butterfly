@@ -190,10 +190,12 @@ const PatientExtentList = (props, resource, basePath) => (
             <TextField source="homeAddress" multiline/>
             <TextField source="isolationAddress" multiline/>
             <MyDateField source="lastDassTime" showTime label="Last DASS Time"/>
-            <NumberField source="lastDassResult" label="Last DASS Result"/>
+            <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
+            <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
+            <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
             <MyDateField source="lastIesrTime" showTime label="Last IES-R Time"/>
-            <NumberField source="lastIesrResult" label="Last IES-R Result"/>
-            <BooleanField source="hasCompleted"/>
+            <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
+            <BooleanField source="hasCompleted" label={"Has Completed Monitoring?"}/>
             <SelectField source="mentalStatus" choices={PATIENT_MENTAL_STATUS}/>
             <MyDateOnlyField source="swabDate" label="Swab Date"/>
             <SelectField source="swabResult" choices={PATIENT_SWAB_RESULT}/>
@@ -219,7 +221,10 @@ export const PatientList = ({permissions, ...props}) => {
                 <TextField source="phoneNumber"/>
                 <TextField source="email"/>
                 <SelectField source="type" choices={PATIENT_TYPE}/>
-                <SelectField source="status" choices={DECLARATION_STATUS}/>
+                <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
+                <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
+                <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
+                <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
                 <TextField source="daySinceMonitoring"/>
                 <BooleanField source="hasCompleted"/>
             </Datagrid>
@@ -298,7 +303,10 @@ export class PatientShow extends React.Component {
                                     <NumberField source="anxiety" label={"Anxiety Score"}/>
                                     <NumberField source="stress" label={"Stress Score"}/>
                                     <TextField source="score"/>
-                                    <SelectField source="status" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
+                                    <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
                                     <TextField
                                         source="doctorRemarks"
                                         multiline

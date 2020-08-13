@@ -37,6 +37,7 @@ import {apiUrl, httpClient} from "../data_provider/dataProvider";
 import Button from "@material-ui/core/Button";
 import CustomBarChart from "./visualization/custom-bar-chart";
 import Grid from "@material-ui/core/Grid";
+import {SimpleArrayTextField} from "./common/SimpleArrayTextField";
 
 export const PATIENT_TYPE = [
     {id: "1", name: "PUI"},
@@ -202,6 +203,9 @@ const PatientExtentList = (props) => (
             <MyDateOnlyField source="swabDate" label="Swab Date"/>
             <SelectField source="swabResult" choices={PATIENT_SWAB_RESULT}/>
             <RichTextField source="remarks" multiline/>
+            <SimpleArrayTextField source="personality">
+                <TextField source="id"/>
+            </SimpleArrayTextField>
         </SimpleShowLayout>
     </Show>
 );
@@ -256,18 +260,18 @@ export const PatientCreate = (props) => {
 export class PatientShow extends React.Component {
 
     state = {
-        chartStressSeries: [0, 0],
-        chartDepressionSeries: [0, 0],
-        chartAnxietySeries: [0, 0],
-        chartPtsdSeries: [0, 0],
-        chartOptions: {
-            chart: {
-                id: "basic-bar"
-            },
-            xaxis: {
-                categories: ['First Assessment Score', 'Second Assessment Score']
-            }
-        },
+        chartStressSeries: [],
+        chartDepressionSeries: [],
+        chartAnxietySeries: [],
+        chartPtsdSeries: [],
+        chartDailySeries: [],
+        chartStressStatuses: [],
+        chartDepressionStatuses: [],
+        chartAnxietyStatuses: [],
+        chartPtsdStatuses: [],
+        chartDailyStatuses: [],
+        chartDassCategories: [],
+        chartIesrCategories: [],
     };
 
     componentDidMount() {
@@ -282,23 +286,26 @@ export class PatientShow extends React.Component {
                     console.log(status + data);
                 } else {
                     // set stress series
-                    this.setState({chartStressSeries: [data.stressCount1, data.stressCount2]});
+                    this.setState({chartStressSeries: data.stressCounts});
                     // set depression series
-                    this.setState({chartDepressionSeries: [data.depressionCount1, data.depressionCount2]});
+                    this.setState({chartDepressionSeries: data.depressionCounts});
                     // set anxiety series
-                    this.setState({chartAnxietySeries: [data.anxietyCount1, data.anxietyCount2]});
+                    this.setState({chartAnxietySeries: data.anxietyCounts});
                     // set ptsd series
-                    this.setState({chartPtsdSeries: [data.ptsdCount1, data.ptsdCount2]});
-                    // set comparison series
-                    this.setState({
-                        comparisonSeries: [{
-                            name: "Before Monitoring",
-                            data: [data.stressCount1, data.anxietyCount1, data.depressionCount1, data.ptsdCount1],
-                        }, {
-                            name: "After Monitoring",
-                            data: [data.stressCount2, data.anxietyCount2, data.depressionCount2, data.ptsdCount2],
-                        }]
-                    })
+                    this.setState({chartPtsdSeries: data.ptsdCounts});
+                    // set daily series
+                    this.setState({chartDailySeries: data.dailyCounts});
+                    // set categories
+                    const dassCategories = [];
+                    const iesrCategories = [];
+                    data.stressCounts.forEach((data, i) => {
+                        dassCategories.push("Test " + (i + 1));
+                    });
+                    data.ptsdCounts.forEach((data, i) => {
+                        iesrCategories.push("Test " + (i + 1));
+                    });
+                    this.setState({chartDassCategories: dassCategories});
+                    this.setState({chartIesrCategories: iesrCategories});
                 }
             })
             .catch((err) => {
@@ -343,7 +350,7 @@ export class PatientShow extends React.Component {
                     </Tab>
                     <Tab label="Test Reports" path="declarations">
                         <ReferenceManyField
-                            reference="declarations"
+                            reference="normaldeclarations"
                             target="patientId"
                             addLabel={false}
                             sort={{field: "submittedAt", order: "DESC"}}
@@ -375,24 +382,52 @@ export class PatientShow extends React.Component {
                     <Tab label="Test Results" path="results">
                         <Grid container>
                             <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                                            propOption={{
+                                                chart: {
+                                                    id: "basic-bar"
+                                                },
+                                                xaxis: {
+                                                    categories: this.state.chartDassCategories,
+                                                }
+                                            }} description={"Scores"}/>
                         </Grid>
                         <Grid container>
                             <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                                            propOption={{
+                                                chart: {
+                                                    id: "basic-bar"
+                                                },
+                                                xaxis: {
+                                                    categories: this.state.chartDassCategories,
+                                                }
+                                            }} description={"Scores"}/>
                         </Grid>
                         <Grid container>
                             <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                                            propOption={{
+                                                chart: {
+                                                    id: "basic-bar"
+                                                },
+                                                xaxis: {
+                                                    categories: this.state.chartDassCategories,
+                                                }
+                                            }} description={"Scores"}/>
                         </Grid>
                         <Grid container>
-                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                            <CustomBarChart title={"IES-R Report"} propData={this.state.chartPtsdSeries}
+                                            propOption={{
+                                                chart: {
+                                                    id: "basic-bar"
+                                                },
+                                                xaxis: {
+                                                    categories: this.state.chartIesrCategories,
+                                                }
+                                            }} description={"Scores"}/>
                         </Grid>
                     </Tab>
                     <Tab label="Daily Care Reports" path="dailyquestions">
                         <ReferenceManyField
-                            reference="declarations"
+                            reference="dailydeclarations"
                             target="patientId"
                             addLabel={false}
                             sort={{field: "submittedAt", order: "DESC"}}
@@ -423,20 +458,15 @@ export class PatientShow extends React.Component {
                     </Tab>
                     <Tab label="Daily Care Results" path="dailyquestionsresults">
                         <Grid container>
-                            <CustomBarChart title={"DASS Stress Report"} propData={this.state.chartStressSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS Anxiety Report"} propData={this.state.chartAnxietySeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS Depression Report"} propData={this.state.chartDepressionSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
-                        </Grid>
-                        <Grid container>
-                            <CustomBarChart title={"DASS IES-R Report"} propData={this.state.chartPtsdSeries}
-                                            propOption={this.state.chartOptions} description={"Scores"}/>
+                            <CustomBarChart title={"Daily Care Report"} propData={this.state.chartDailySeries}
+                                            propOption={{
+                                                chart: {
+                                                    id: "basic-bar"
+                                                },
+                                                xaxis: {
+                                                    categories: this.state.chartIesrCategories,
+                                                }
+                                            }} description={"Scores"}/>
                         </Grid>
                     </Tab>
                     <Tab label="Meetings" path="meetings">

@@ -52,6 +52,8 @@ const RESOURCES = [
     <Resource name="meetings" list={MeetingList} create={MeetingCreate} edit={MeetingEdit}
               options={{label: 'Meetings'}}/>,
     <Resource name="declarations" options={{label: "Reports"}} edit={DeclarationEdit} list={DeclarationList}/>,
+    <Resource name="dailydeclarations" />,
+    <Resource name="normaldeclarations" />,
     <Resource name="questions" list={QuestionList} create={QuestionCreate} edit={QuestionEdit}
               options={{label: 'Questions'}}/>,
     <Resource name="feeds" list={FeedList} create={FeedCreate} edit={FeedEdit}
@@ -65,9 +67,9 @@ const RESOURCES = [
 ];
 
 const RESOURCE_AVAILABLE = {
-    "superuser": ["users", "questions", "feeds", "tips", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
-    "admin": ["users", "consultants", "patients", "meetings", "declarations"],
-    "consultant": ["consultants", "patients", "declarations", "meetings"],
+    "superuser": ["users", "normaldeclarations", "dailydeclarations", "questions", "feeds", "tips", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
+    "admin": ["users", "normaldeclarations", "dailydeclarations", "consultants", "patients", "meetings"],
+    "consultant": ["consultants", "patients", "normaldeclarations", "dailydeclarations", "meetings"],
     "guest": ["users"],
 };
 

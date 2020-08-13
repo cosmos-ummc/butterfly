@@ -18,6 +18,7 @@ import {CustomFilter} from "./filter";
 const QUESTION_CATEGORY = [
     {id: "dass", name: 'DASS'},
     {id: "iesr", name: 'IES-R'},
+    {id: "daily", name: 'Daily Report'},
 ];
 
 const QUESTION_TYPE = [

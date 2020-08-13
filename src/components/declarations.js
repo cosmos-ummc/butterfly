@@ -20,6 +20,7 @@ import {MyDateField} from "./common/dateField";
 export const DECLARATION_CATEGORY = [
     {id: "dass", name: 'DASS'},
     {id: "iesr", name: 'IES-R'},
+    {id: "daily", name: 'Daily Report'},
 ];
 
 export const DECLARATION_STATUS = [

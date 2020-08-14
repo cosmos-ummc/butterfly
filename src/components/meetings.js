@@ -110,6 +110,7 @@ export const MeetingList = props => (
         filters={<CustomFilter/>}
         {...props}
         sort={{field: 'time', order: 'DESC'}}
+        title={"Meetings"}
     >
         <Datagrid rowClick='show'>
             <TextField source="patientId" label={"User IC/Passport"}/>
@@ -124,7 +125,7 @@ export const MeetingList = props => (
 );
 
 export const MeetingCreate = props => (
-    <Create undoable={false} {...props} successMessage={STRING.MEETING_CREATED}>
+    <Create undoable={false} {...props} successMessage={STRING.MEETING_CREATED} title={"Meeting"}>
         <SimpleForm>
             <ReferenceInput label="User" source="patientId" reference="patients">
                 <SelectInput optionText="name"/>
@@ -139,7 +140,7 @@ export const MeetingCreate = props => (
 );
 
 export const MeetingEdit = props => (
-    <Edit undoable={false} {...props} successMessage={STRING.MEETING_UPDATED}>
+    <Edit undoable={false} {...props} successMessage={STRING.MEETING_UPDATED} title={"Meeting"}>
         <SimpleForm>
             <ReferenceInput label="User" source="patientId" reference="patients">
                 <SelectInput optionText="name"/>

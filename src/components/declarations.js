@@ -57,7 +57,7 @@ export const DeclarationList = props => (
 );
 
 export const DeclarationEdit = props => (
-    <Edit undoable={false} {...props} successMessage={STRING.DECLARATION_UPDATED} title={"Report #" + props.id}>
+    <Edit undoable={false} {...props} successMessage={STRING.DECLARATION_UPDATED} title={"Report"}>
         <SimpleForm>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
             <TextField source="patientId" label={"User NRIC/Passport"}/>

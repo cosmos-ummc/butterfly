@@ -7,62 +7,15 @@ import {
     TextField,
     SimpleForm,
     TextInput,
-    useNotify,
     BooleanInput, SelectInput,
 } from "react-admin";
-
-import Button from '@material-ui/core/Button';
-
 import {messagePopupStrings as STRING} from './common/strings';
-import {apiUrl, httpClient} from '../data_provider/dataProvider';
 import {CustomFilter} from "./filter";
 
 const USER_ROLE = [
     {id: "admin", name: "Admin"},
     {id: "superuser", name: "Superuser"},
 ];
-
-export default function ResetPasswordButton(props) {
-    const url = apiUrl + `/users/${props.id}/passwordreset`;
-    const notify = useNotify();
-
-    const resetPass = () => {
-        httpClient(url)
-            .then(response => ({
-                status: response.status,
-                headers: response.headers,
-                data: response.json,
-            }))
-            .then(({status, headers, data, total}) => {
-                if (data && data.error) {
-                    notify(`${data.error}`, `warning`);
-                } else if (data && data.message) {
-                    notify(data.message);
-                } else {
-                    notify(`Error reset password, please contact admin`, `warning`);
-                }
-            })
-            .catch(err => {
-                notify(`Error reset password, please contact admin`, `warning`);
-                console.log('Error reset password: fail get backend API: ' + err)
-            })
-    };
-    return (
-        <div>
-            <Button variant='contained' style={{background: 'orange'}} onClick={resetPass}>Reset User Password</Button>
-        </div>
-    )
-}
-
-const ResetPasswordField = ({record = {}}) => {
-    return (
-        <ResetPasswordButton id={record.id}/>
-    )
-};
-
-ResetPasswordField.defaultProps = {
-    label: 'Reset Pass',
-};
 
 export const UserList = props => (
     <List
@@ -99,7 +52,6 @@ export const UserEdit = props => (
             <TextInput source="email"/>
             <BooleanInput source="verified"/>
             <SelectInput source="role" choices={USER_ROLE} initialValue='admin'/>
-            <ResetPasswordField/>
         </SimpleForm>
     </Edit>
 );

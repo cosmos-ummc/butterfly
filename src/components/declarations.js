@@ -8,7 +8,6 @@ import {
     TextInput,
     SelectInput,
     SelectField,
-    ReferenceField,
     ArrayField,
     NumberField,
     NumberInput,
@@ -40,15 +39,9 @@ export const DeclarationList = props => (
         title={"Reports"}
     >
         <Datagrid rowClick='show'>
-            <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
-                <TextField source="id"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="Name" link="show">
-                <TextField source="name"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="Phone Number" link="show">
-                <TextField source="phoneNumber"/>
-            </ReferenceField>
+            <TextField source="patientId" label={"User NRIC/Passport"}/>
+            <TextField source="patientName" label={"User Name"}/>
+            <TextField source="patientPhoneNumber" label={"User Phone Number"}/>
             <SelectField source="category" choices={DECLARATION_CATEGORY}/>
             <NumberField source="depression" label={"Depression Score"}/>
             <NumberField source="anxiety" label={"Anxiety Score"}/>
@@ -67,20 +60,12 @@ export const DeclarationEdit = props => (
     <Edit undoable={false} {...props} successMessage={STRING.DECLARATION_UPDATED} title={"Report #" + props.id}>
         <SimpleForm>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
-            <ReferenceField source="patientId" reference="patients" label="NRIC/Passport" link="show">
-                <TextField source="id"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="Name" link="show">
-                <TextField source="name"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" label="Phone Number" link="show">
-                <TextField source="phoneNumber"/>
-            </ReferenceField>
+            <TextField source="patientId" label={"User NRIC/Passport"}/>
+            <TextField source="patientName" label={"User Name"}/>
+            <TextField source="patientPhoneNumber" label={"User Phone Number"}/>
             <ArrayField source="result" label="Results">
                 <Datagrid>
-                    <ReferenceField source="id" reference="questions" label="Question" link="show">
-                        <TextField source="content"/>
-                    </ReferenceField>
+                    <TextField source="content"/>
                     <TextField source="score"/>
                 </Datagrid>
             </ArrayField>

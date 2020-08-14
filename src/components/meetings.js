@@ -7,7 +7,7 @@ import {
     TextField,
     SimpleForm,
     SelectInput,
-    SelectField, ReferenceField, ReferenceInput, TextInput,
+    SelectField, ReferenceInput, TextInput,
 } from "react-admin";
 import {messagePopupStrings as STRING} from "./common/strings";
 import {CustomFilter} from "./filter";
@@ -15,8 +15,8 @@ import {CustomFilter} from "./filter";
 export const MEETING_STATUS = [
     {id: "1", name: 'Pending'},
     {id: "2", name: 'Accepted'},
-    {id: "3", name: 'Rejected'},
     {id: "4", name: 'Self Notified'},
+    {id: "5", name: 'Completed'},
 ];
 
 function MonthAsString(monthIndex) {
@@ -112,21 +112,11 @@ export const MeetingList = props => (
         sort={{field: 'time', order: 'DESC'}}
     >
         <Datagrid rowClick='show'>
-            <ReferenceField source="patientId" reference="patients" link="show" label="User IC/Passport">
-                <TextField source="id"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" link="show" label="User Name">
-                <TextField source="name"/>
-            </ReferenceField>
-            <ReferenceField source="patientId" reference="patients" link="show" label="User Phone Number">
-                <TextField source="phoneNumber"/>
-            </ReferenceField>
-            <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Name">
-                <TextField source="name"/>
-            </ReferenceField>
-            <ReferenceField source="consultantId" reference="consultants" link="show" label="Consultant Phone Number">
-                <TextField source="phoneNumber"/>
-            </ReferenceField>
+            <TextField source="patientId" label={"User IC/Passport"}/>
+            <TextField source="patientName" label={"User Name"}/>
+            <TextField source="patientPhoneNumber" label={"User Phone Number"}/>
+            <TextField source="consultantName" label={"Consultant Name"}/>
+            <TextField source="consultantPhoneNumber" label={"Consultant Phone Number"}/>
             <SelectField source="status" choices={MEETING_STATUS}/>
             <TextField source="time"/>
         </Datagrid>

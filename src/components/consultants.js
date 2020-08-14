@@ -14,7 +14,6 @@ import {
     Show,
     TabbedShowLayout,
     Tab,
-    ReferenceField,
     ArrayInput,
     SimpleFormIterator,
 } from "react-admin";
@@ -58,7 +57,7 @@ export const ConsultantList = ({permissions, ...props}) => {
 
 export const ConsultantCreate = (props) => {
     return (
-        <Create undoable={false} {...props} successMessage={STRING.CONSULTANT_CREATED} title={"Consultants"}>
+        <Create undoable={false} {...props} successMessage={STRING.CONSULTANT_CREATED} title={"Consultant"}>
             <SimpleForm>
                 <TextInput source="name"/>
                 <TextInput source="phoneNumber"/>
@@ -72,7 +71,7 @@ export const ConsultantCreate = (props) => {
 export class ConsultantShow extends React.Component {
     render() {
         return (
-            <Show {...this.props} actions="" title={"Consultant #" + this.props.id}>
+            <Show {...this.props} actions="" title={"Consultants"}>
                 <TabbedShowLayout>
                     <Tab label="Details">
                         <Edit
@@ -89,8 +88,8 @@ export class ConsultantShow extends React.Component {
                                 <TextInput source="name"/>
                                 <TextInput source="phoneNumber"/>
                                 <TextInput source="email"/>
-                                <ArrayInput source="takenSlots" label="Taken Slots" disabled>
-                                    <SimpleFormIterator disabled>
+                                <ArrayInput source="takenSlots" label="Taken Slots">
+                                    <SimpleFormIterator disableRemove disableAdd>
                                         <TextInput fullWidth multiline
                                                    format={(value) => (typeof value === 'object' ? '' : value)}
                                                    label="" disabled/>
@@ -107,17 +106,11 @@ export class ConsultantShow extends React.Component {
                             sort={{field: "time", order: "DESC"}}
                         >
                             <List bulkActionButtons={false} filter={{consultantId: this.props.id}}
-                                  sort={{field: "time", order: "DESC"}}>
+                                  sort={{field: "time", order: "DESC"}} title={" "}>
                                 <Datagrid>
-                                    <ReferenceField source="patientId" reference="patients" link="show" label="User IC/Passport">
-                                        <TextField source="id"/>
-                                    </ReferenceField>
-                                    <ReferenceField source="patientId" reference="patients" link="show" label="User Name">
-                                        <TextField source="name"/>
-                                    </ReferenceField>
-                                    <ReferenceField source="patientId" reference="patients" link="show" label="User Phone Number">
-                                        <TextField source="phoneNumber"/>
-                                    </ReferenceField>
+                                    <TextField source="patientId" label={"User IC/Passport"}/>
+                                    <TextField source="patientName" label={"User Name"}/>
+                                    <TextField source="patientPhoneNumber" label={"User Phone Number"}/>
                                     <SelectField source="status" choices={MEETING_STATUS}/>
                                     <TextField source="time"/>
                                 </Datagrid>

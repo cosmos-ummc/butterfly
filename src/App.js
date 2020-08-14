@@ -68,7 +68,7 @@ const RESOURCES = [
 
 const RESOURCE_AVAILABLE = {
     "superuser": ["users", "normaldeclarations", "dailydeclarations", "questions", "feeds", "tips", "games", "meditations", "consultants", "patients", "declarations", "meetings"],
-    "admin": ["users", "normaldeclarations", "dailydeclarations", "consultants", "patients", "meetings"],
+    "admin": ["users", "declarations", "normaldeclarations", "dailydeclarations", "consultants", "patients", "meetings"],
     "consultant": ["consultants", "patients", "normaldeclarations", "dailydeclarations", "meetings"],
     "guest": ["users"],
 };

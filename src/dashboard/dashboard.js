@@ -116,10 +116,10 @@ class Dashboard extends React.Component {
                     // set comparison series
                     this.setState({
                         comparisonSeries: [{
-                            name: "Before Monitoring",
+                            name: "Start of Monitoring",
                             data: [data.stressCounts[0], data.anxietyCounts[0], data.depressionCounts[0], data.ptsdCounts[0]],
                         }, {
-                            name: "After Monitoring",
+                            name: "End of Monitoring",
                             data: [data.stressCounts[1], data.anxietyCounts[1], data.depressionCounts[1], data.ptsdCounts[1]],
                         }]
                     });
@@ -140,7 +140,7 @@ class Dashboard extends React.Component {
                 <CardContent>
                     <Grid container style={{marginLeft: "50px"}}>
                         <Grid container>
-                            <h1>Overall Patient Test Results</h1>
+                            <h1>Overall User Test Results</h1>
                         </Grid>
                         <Grid container>
                             <CustomBarChart title={"DASS (Stress)"} propData={this.state.chartStressSeries}

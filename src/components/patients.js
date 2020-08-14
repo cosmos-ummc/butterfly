@@ -19,7 +19,7 @@ import {
     RichTextField,
     NumberInput,
     BooleanInput,
-    BooleanField, ReferenceField,
+    BooleanField,
     NumberField, useNotify,
 } from "react-admin";
 import RichTextInput from 'ra-input-rich-text';
@@ -240,7 +240,7 @@ export const PatientList = ({permissions, ...props}) => {
 
 export const PatientCreate = (props) => {
     return (
-        <Create undoable={false} {...props} successMessage={STRING.PATIENT_CREATED} title={"Users"}>
+        <Create undoable={false} {...props} successMessage={STRING.PATIENT_CREATED} title={"User"}>
             <SimpleForm>
                 <TextInput source="id" label="NRIC/Passport"/>
                 <TextInput source="name"/>
@@ -315,7 +315,7 @@ export class PatientShow extends React.Component {
 
     render() {
         return (
-            <Show {...this.props} actions="" title={"User #" + this.props.id}>
+            <Show {...this.props} actions="" title={"User"}>
                 <TabbedShowLayout>
                     <Tab label="Details">
                         <Edit
@@ -357,7 +357,7 @@ export class PatientShow extends React.Component {
                             link="show"
                         >
                             <List bulkActionButtons={false} filter={{patientId: this.props.id}}
-                                  sort={{field: "submittedAt", order: "DESC"}}>
+                                  sort={{field: "submittedAt", order: "DESC"}} title={" "}>
                                 <Datagrid>
                                     <MyDateField source="submittedAt" showTime label="Submitted At"/>
                                     <SelectField source="category" choices={DECLARATION_CATEGORY}/>
@@ -434,7 +434,7 @@ export class PatientShow extends React.Component {
                             link="show"
                         >
                             <List bulkActionButtons={false} filter={{patientId: this.props.id}}
-                                  sort={{field: "submittedAt", order: "DESC"}}>
+                                  sort={{field: "submittedAt", order: "DESC"}} title={" "}>
                                 <Datagrid>
                                     <MyDateField source="submittedAt" showTime label="Submitted At"/>
                                     <SelectField source="category" choices={DECLARATION_CATEGORY}/>
@@ -477,16 +477,10 @@ export class PatientShow extends React.Component {
                             sort={{field: "time", order: "DESC"}}
                         >
                             <List bulkActionButtons={false} filter={{patientId: this.props.id}}
-                                  sort={{field: "time", order: "DESC"}}>
+                                  sort={{field: "time", order: "DESC"}} title={" "}>
                                 <Datagrid>
-                                    <ReferenceField source="consultantId" reference="consultants" link="show"
-                                                    label="Consultant Name">
-                                        <TextField source="name"/>
-                                    </ReferenceField>
-                                    <ReferenceField source="consultantId" reference="consultants" link="show"
-                                                    label="Consultant Phone Number">
-                                        <TextField source="phoneNumber"/>
-                                    </ReferenceField>
+                                    <TextField source="consultantName" label={"Consultant Name"}/>
+                                    <TextField source="consultantPhoneNumber" label={"Consultant Phone Number"}/>
                                     <SelectField source="status" choices={MEETING_STATUS}/>
                                     <TextField source="time"/>
                                 </Datagrid>

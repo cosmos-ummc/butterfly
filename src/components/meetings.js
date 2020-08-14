@@ -15,7 +15,7 @@ import {CustomFilter} from "./filter";
 export const MEETING_STATUS = [
     {id: "1", name: 'Pending'},
     {id: "2", name: 'Accepted'},
-    {id: "4", name: 'Requested by Patient'},
+    {id: "4", name: 'Requested by User'},
     {id: "5", name: 'Completed'},
 ];
 

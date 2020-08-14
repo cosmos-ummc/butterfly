@@ -88,11 +88,7 @@ const PatientEventButton = props => {
                 id: response.json.id
             }))
             .then((data) => {
-                if (!data.ok) {
-                    notify("Telegram ID not found. Please ensure that you have linked the phone number to the Telegram Bot.");
-                } else {
-                    notify("Telegram Bot day 7 reminder has been sent to the selected user.");
-                }
+                notify("Telegram Bot day 7 reminder has been sent to the selected user.");
             })
             .catch(err => {
                 notify("Failed to send reminder due to server error.", "warning");

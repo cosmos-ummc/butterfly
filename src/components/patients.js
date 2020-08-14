@@ -390,6 +390,14 @@ export class PatientShow extends React.Component {
                                                 },
                                                 xaxis: {
                                                     categories: this.state.chartDassCategories,
+                                                },
+                                                title: {
+                                                    text: 'Scores',
+                                                    floating: true,
+                                                    align: 'center',
+                                                    style: {
+                                                        color: '#444'
+                                                    }
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>
@@ -401,6 +409,14 @@ export class PatientShow extends React.Component {
                                                 },
                                                 xaxis: {
                                                     categories: this.state.chartDassCategories,
+                                                },
+                                                title: {
+                                                    text: 'Scores',
+                                                    floating: true,
+                                                    align: 'center',
+                                                    style: {
+                                                        color: '#444'
+                                                    }
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>
@@ -412,6 +428,14 @@ export class PatientShow extends React.Component {
                                                 },
                                                 xaxis: {
                                                     categories: this.state.chartDassCategories,
+                                                },
+                                                title: {
+                                                    text: 'Scores',
+                                                    floating: true,
+                                                    align: 'center',
+                                                    style: {
+                                                        color: '#444'
+                                                    }
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>
@@ -423,6 +447,14 @@ export class PatientShow extends React.Component {
                                                 },
                                                 xaxis: {
                                                     categories: this.state.chartIesrCategories,
+                                                },
+                                                title: {
+                                                    text: 'Scores',
+                                                    floating: true,
+                                                    align: 'center',
+                                                    style: {
+                                                        color: '#444'
+                                                    }
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>
@@ -455,6 +487,14 @@ export class PatientShow extends React.Component {
                                                 },
                                                 xaxis: {
                                                     categories: this.state.chartDailyCategories,
+                                                },
+                                                title: {
+                                                    text: 'Scores',
+                                                    floating: true,
+                                                    align: 'center',
+                                                    style: {
+                                                        color: '#444'
+                                                    }
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>

@@ -48,6 +48,14 @@ class Dashboard extends React.Component {
             },
             xaxis: {
                 categories: ['Normal', 'Mild', 'Moderate', 'Severe', 'Extremely Severe']
+            },
+            title: {
+                text: 'Number of Users',
+                floating: true,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
             }
         },
         chartIesrOptions: {
@@ -56,6 +64,14 @@ class Dashboard extends React.Component {
             },
             xaxis: {
                 categories: ['Normal / Mild', 'Moderate / Severe']
+            },
+            title: {
+                text: 'Number of Users',
+                floating: true,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
             }
         },
         comparisonSeries: [{

@@ -20,6 +20,7 @@ import {FeedCreate, FeedEdit, FeedList} from "./components/feeds";
 import {GameCreate, GameEdit, GameList} from "./components/games";
 import {MeditationCreate, MeditationEdit, MeditationList} from "./components/meditations";
 import {TipCreate, TipEdit, TipList} from "./components/tips";
+import MyLoginPage from "./components/login";
 
 const getThemeBasedOnEnv = () => {
     let theme = {
@@ -89,6 +90,7 @@ const App = () => (
             theme={getThemeBasedOnEnv()}
             dashboard={Dashboard}
             dataProvider={customProvider}
+            loginPage={MyLoginPage}
         >
             {fetchResources}
         </Admin>

@@ -21,7 +21,7 @@ export const httpClientRefresh = (url, options = {}) => {
 export default {
     login: ({username, password}) => {
         return new Promise((resolve, reject) => {
-            const data = {"email": username, "password": password}
+            const data = {"email": username, "password": password};
             const url = `${apiUrl}/login`;
 
             httpClientLogin(url, {

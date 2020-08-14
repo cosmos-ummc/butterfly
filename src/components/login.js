@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {userLogin} from 'react-admin';
-import {MuiThemeProvider} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -40,7 +39,7 @@ const styles = (theme) => ({
     },
     form: {
         width: "100%",
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(10),
     },
     inputfield: {
         backgroundColor: grey[200],

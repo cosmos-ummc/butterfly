@@ -16,6 +16,7 @@ import {
     Tab,
     ArrayInput,
     SimpleFormIterator,
+    Button,
 } from "react-admin";
 import {makeStyles} from "@material-ui/core/styles";
 import {rowStyle} from "./common/rowStyle";
@@ -113,6 +114,7 @@ export class ConsultantShow extends React.Component {
                                     <TextField source="patientPhoneNumber" label={"User Phone Number"}/>
                                     <SelectField source="status" choices={MEETING_STATUS}/>
                                     <TextField source="time"/>
+                                    <Button label={"Join Meeting"} href={"https://chat.quaranteams.tk"}/>
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>

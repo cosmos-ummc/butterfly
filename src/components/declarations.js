@@ -5,7 +5,6 @@ import {
     Datagrid,
     TextField,
     SimpleForm,
-    TextInput,
     SelectInput,
     SelectField,
     ArrayField,
@@ -51,6 +50,7 @@ export const DeclarationList = props => (
             <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
             <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
             <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
+            <SelectField source="dailyStatus" choices={DECLARATION_STATUS}/>
             <MyDateField source="submittedAt" showTime label="Submitted At"/>
         </Datagrid>
     </List>
@@ -78,11 +78,7 @@ export const DeclarationEdit = props => (
             <SelectInput source="anxietyStatus" choices={DECLARATION_STATUS} disabled/>
             <SelectInput source="stressStatus" choices={DECLARATION_STATUS} disabled/>
             <SelectInput source="ptsdStatus" choices={DECLARATION_STATUS} disabled/>
-            <TextInput
-                source="doctorRemarks"
-                multiline
-                label="Doctor's Note"
-            />
+            <SelectInput source="dailyStatus" choices={DECLARATION_STATUS} disabled/>
         </SimpleForm>
     </Edit>
 );

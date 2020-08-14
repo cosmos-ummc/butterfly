@@ -187,7 +187,6 @@ const CustomToolbar = (props) => (
 );
 
 const PatientExtentList = (props) => (
-    // TODO: Add swab date and result
     <Show {...props} title={" "}>
         <SimpleShowLayout>
             <TextField source="homeAddress" multiline/>
@@ -198,6 +197,7 @@ const PatientExtentList = (props) => (
             <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
             <MyDateField source="lastIesrTime" showTime label="Last IES-R Time"/>
             <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
+            <SelectField source="dailyStatus" choices={DECLARATION_STATUS} label={"Daily Report Status"}/>
             <BooleanField source="hasCompleted" label={"Has Completed Monitoring?"}/>
             <SelectField source="mentalStatus" choices={PATIENT_MENTAL_STATUS}/>
             <MyDateOnlyField source="swabDate" label="Swab Date"/>
@@ -231,6 +231,7 @@ export const PatientList = ({permissions, ...props}) => {
                 <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
                 <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
                 <SelectField source="ptsdStatus" choices={DECLARATION_STATUS} label={"PTSD Status"}/>
+                <SelectField source="dailyStatus" choices={DECLARATION_STATUS} label={"Daily Report Status"}/>
                 <TextField source="daySinceMonitoring"/>
                 <BooleanField source="hasCompleted"/>
             </Datagrid>
@@ -272,6 +273,7 @@ export class PatientShow extends React.Component {
         chartDailyStatuses: [],
         chartDassCategories: [],
         chartIesrCategories: [],
+        chartDailyCategories: [],
     };
 
     componentDidMount() {
@@ -298,14 +300,19 @@ export class PatientShow extends React.Component {
                     // set categories
                     const dassCategories = [];
                     const iesrCategories = [];
+                    const dailyCategories = [];
                     data.stressCounts.forEach((data, i) => {
                         dassCategories.push("Test " + (i + 1));
                     });
                     data.ptsdCounts.forEach((data, i) => {
                         iesrCategories.push("Test " + (i + 1));
                     });
+                    data.dailyCounts.forEach((data, i) => {
+                        dailyCategories.push("Test " + (i + 1));
+                    });
                     this.setState({chartDassCategories: dassCategories});
                     this.setState({chartIesrCategories: iesrCategories});
+                    this.setState({chartDailyCategories: dailyCategories});
                 }
             })
             .catch((err) => {
@@ -370,11 +377,6 @@ export class PatientShow extends React.Component {
                                     <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
                                     <SelectField source="ptsdStatus" choices={DECLARATION_STATUS}
                                                  label={"PTSD Status"}/>
-                                    <TextField
-                                        source="doctorRemarks"
-                                        multiline
-                                        label="Doctor's Note"
-                                    />
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>
@@ -438,33 +440,21 @@ export class PatientShow extends React.Component {
                                 <Datagrid>
                                     <MyDateField source="submittedAt" showTime label="Submitted At"/>
                                     <SelectField source="category" choices={DECLARATION_CATEGORY}/>
-                                    <NumberField source="depression" label={"Depression Score"}/>
-                                    <NumberField source="anxiety" label={"Anxiety Score"}/>
-                                    <NumberField source="stress" label={"Stress Score"}/>
                                     <TextField source="score"/>
-                                    <SelectField source="depressionStatus" choices={DECLARATION_STATUS}/>
-                                    <SelectField source="anxietyStatus" choices={DECLARATION_STATUS}/>
-                                    <SelectField source="stressStatus" choices={DECLARATION_STATUS}/>
-                                    <SelectField source="ptsdStatus" choices={DECLARATION_STATUS}
-                                                 label={"PTSD Status"}/>
-                                    <TextField
-                                        source="doctorRemarks"
-                                        multiline
-                                        label="Doctor's Note"
-                                    />
+                                    <SelectField source="dailyStatus" choices={DECLARATION_STATUS} label={"Daily Report Status"}/>
                                 </Datagrid>
                             </List>
                         </ReferenceManyField>
                     </Tab>
                     <Tab label="Daily Care Results" path="dailyquestionsresults">
                         <Grid container>
-                            <CustomBarChart title={"Daily Care Report"} propData={this.state.chartDailySeries}
+                            <CustomBarChart title={"Daily Care Results"} propData={this.state.chartDailySeries}
                                             propOption={{
                                                 chart: {
                                                     id: "basic-bar"
                                                 },
                                                 xaxis: {
-                                                    categories: this.state.chartIesrCategories,
+                                                    categories: this.state.chartDailyCategories,
                                                 }
                                             }} description={"Scores"}/>
                         </Grid>

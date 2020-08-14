@@ -29,15 +29,19 @@ class Dashboard extends React.Component {
             stressExtreme: 0,
             ptsdNormal: 0,
             ptsdSevere: 0,
+            dailyNormal: 0,
+            dailySevere: 0,
             depressionCounts: [0, 0],
             anxietyCounts: [0, 0],
             stressCounts: [0, 0],
             ptsdCounts: [0, 0],
+            dailyCounts: [0, 0],
         },
         chartStressSeries: [0, 0, 0, 0, 0],
         chartDepressionSeries: [0, 0, 0, 0, 0],
         chartAnxietySeries: [0, 0, 0, 0, 0],
         chartPtsdSeries: [0, 0],
+        chartDailySeries: [0, 0],
         chartDassOptions: {
             chart: {
                 id: "basic-bar"
@@ -51,15 +55,15 @@ class Dashboard extends React.Component {
                 id: "basic-bar"
             },
             xaxis: {
-                categories: ['Normal/Mild', 'Severe']
+                categories: ['Normal / Mild', 'Moderate / Severe']
             }
         },
         comparisonSeries: [{
             name: "First Report",
-            data: [1, 2, 3, 4],
+            data: [1, 2, 3, 4, 5],
         }, {
             name: "Latest Report",
-            data: [5, 6, 7, 8],
+            data: [6, 7, 8, 9, 10],
         }],
         comparisonOptions: {
             chart: {
@@ -88,7 +92,7 @@ class Dashboard extends React.Component {
                 colors: ['#fff']
             },
             xaxis: {
-                categories: ["Stress", "Anxiety", "Depression", "PTSD"],
+                categories: ["Stress", "Anxiety", "Depression", "PTSD", "Daily Report"],
             },
         },
     };
@@ -113,14 +117,16 @@ class Dashboard extends React.Component {
                     this.setState({chartAnxietySeries: [data.anxietyNormal, data.anxietyMild, data.anxietyModerate, data.anxietySevere, data.anxietyExtreme]});
                     // set ptsd series
                     this.setState({chartPtsdSeries: [data.ptsdNormal, data.ptsdSevere]});
+                    // set daily series
+                    this.setState({chartDailySeries: [data.dailyNormal, data.dailySevere]});
                     // set comparison series
                     this.setState({
                         comparisonSeries: [{
                             name: "Start of Monitoring",
-                            data: [data.stressCounts[0], data.anxietyCounts[0], data.depressionCounts[0], data.ptsdCounts[0]],
+                            data: [data.stressCounts[0], data.anxietyCounts[0], data.depressionCounts[0], data.ptsdCounts[0], data.dailyCounts[0]],
                         }, {
                             name: "End of Monitoring",
-                            data: [data.stressCounts[1], data.anxietyCounts[1], data.depressionCounts[1], data.ptsdCounts[1]],
+                            data: [data.stressCounts[1], data.anxietyCounts[1], data.depressionCounts[1], data.ptsdCounts[1], data.dailyCounts[1]],
                         }]
                     });
                 }
@@ -156,6 +162,10 @@ class Dashboard extends React.Component {
                         </Grid>
                         <Grid container>
                             <CustomBarChart title={"IES-R"} propData={this.state.chartPtsdSeries}
+                                            propOption={this.state.chartIesrOptions} description={"Number of Users"}/>
+                        </Grid>
+                        <Grid container>
+                            <CustomBarChart title={"Daily Report Result"} propData={this.state.chartDailySeries}
                                             propOption={this.state.chartIesrOptions} description={"Number of Users"}/>
                         </Grid>
                         <Grid container>

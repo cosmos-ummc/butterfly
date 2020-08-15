@@ -15,6 +15,7 @@ import {CustomFilter} from "./filter";
 const USER_ROLE = [
     {id: "admin", name: "Admin"},
     {id: "superuser", name: "Superuser"},
+    {id: "consultant", name: "Consultant"},
 ];
 
 export const UserList = props => (
